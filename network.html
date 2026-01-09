@@ -1,0 +1,163 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        
+            <script src="lib/bindings/utils.js"></script>
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/dist/vis-network.min.css" integrity="sha512-WgxfT5LWjfszlPHXRmBWHkV2eceiWTOBvrKCNbdgDYTHrT2AeLCGbF4sZlZw3UMN3WtL0tGUoIAKsu8mllg/XA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/vis-network/9.1.2/dist/vis-network.min.js" integrity="sha512-LnvoEWDFrqGHlHmDD2101OrLcbsfkrzoSpvtSQtxK3RMnRV0eOkhhBN2dXHKRrUU8p2DGRTk35n4O8nWSVe1mQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+            
+        
+<center>
+<h1></h1>
+</center>
+
+<!-- <link rel="stylesheet" href="../node_modules/vis/dist/vis.min.css" type="text/css" />
+<script type="text/javascript" src="../node_modules/vis/dist/vis.js"> </script>-->
+        <link
+          href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-eOJMYsd53ii+scO/bJGFsiCZc+5NDVN2yr8+0RDqr0Ql0h+rP48ckxlpbzKgwra6"
+          crossorigin="anonymous"
+        />
+        <script
+          src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js"
+          integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf"
+          crossorigin="anonymous"
+        ></script>
+
+
+        <center>
+          <h1></h1>
+        </center>
+        <style type="text/css">
+
+             #mynetwork {
+                 width: 100%;
+                 height: 600px;
+                 background-color: #0d1117;
+                 border: 1px solid lightgray;
+                 position: relative;
+                 float: left;
+             }
+
+             
+
+             
+
+             
+        </style>
+    </head>
+
+
+    <body>
+        <div class="card" style="width: 100%">
+            
+            
+            <div id="mynetwork" class="card-body"></div>
+        </div>
+
+        
+        
+
+        <script type="text/javascript">
+
+              // initialize global variables.
+              var edges;
+              var nodes;
+              var allNodes;
+              var allEdges;
+              var nodeColors;
+              var originalNodes;
+              var network;
+              var container;
+              var options, data;
+              var filter = {
+                  item : '',
+                  property : '',
+                  value : []
+              };
+
+              
+
+              
+
+              // This method is responsible for drawing the graph, returns the drawn network
+              function drawGraph() {
+                  var container = document.getElementById('mynetwork');
+
+                  
+
+                  // parsing and collecting nodes and edges from the python
+                  nodes = new vis.DataSet([{"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "PLAT", "label": "PLAT", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "PTGS2", "label": "PTGS2", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "AGTR1", "label": "AGTR1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "LPL", "label": "LPL", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "APOB", "label": "APOB", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "P2RY12", "label": "P2RY12", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "FURIN", "label": "FURIN", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ITGA2B", "label": "ITGA2B", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "APOE", "label": "APOE", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ACE", "label": "ACE", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "SERPINC1", "label": "SERPINC1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "PLG", "label": "PLG", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "COL4A1", "label": "COL4A1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "CELSR2", "label": "CELSR2", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ADRB2", "label": "ADRB2", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "LIPA", "label": "LIPA", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "HMGCR", "label": "HMGCR", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "LDLR", "label": "LDLR", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "SORT1", "label": "SORT1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "PCSK9", "label": "PCSK9", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "LPA", "label": "LPA", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ADRA1A", "label": "ADRA1A", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "PTGS1", "label": "PTGS1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ITGB3", "label": "ITGB3", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "CACNA1C", "label": "CACNA1C", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ADRB1", "label": "ADRB1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "CACNA1F", "label": "CACNA1F", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "CACNA1D", "label": "CACNA1D", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "CACNA1S", "label": "CACNA1S", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ADRA1D", "label": "ADRA1D", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "SLC12A3", "label": "SLC12A3", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "NR3C2", "label": "NR3C2", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "GUCY1A1", "label": "GUCY1A1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "GUCY1B1", "label": "GUCY1B1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ADRB3", "label": "ADRB3", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "ADRA1B", "label": "ADRA1B", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "HHIPL1", "label": "HHIPL1", "shape": "dot", "size": 20}, {"color": "#58a6ff", "font": {"color": "#c9d1d9"}, "id": "TCF21", "label": "TCF21", "shape": "dot", "size": 20}]);
+                  edges = new vis.DataSet([{"color": "#30363d", "from": "PLAT", "to": "PTGS2"}, {"color": "#30363d", "from": "PLAT", "to": "AGTR1"}, {"color": "#30363d", "from": "PLAT", "to": "LPL"}, {"color": "#30363d", "from": "PLAT", "to": "APOB"}, {"color": "#30363d", "from": "PLAT", "to": "P2RY12"}, {"color": "#30363d", "from": "PLAT", "to": "FURIN"}, {"color": "#30363d", "from": "PLAT", "to": "ITGA2B"}, {"color": "#30363d", "from": "PLAT", "to": "APOE"}, {"color": "#30363d", "from": "PLAT", "to": "ACE"}, {"color": "#30363d", "from": "PLAT", "to": "SERPINC1"}, {"color": "#30363d", "from": "PLAT", "to": "PLG"}, {"color": "#30363d", "from": "APOB", "to": "COL4A1"}, {"color": "#30363d", "from": "APOB", "to": "CELSR2"}, {"color": "#30363d", "from": "APOB", "to": "AGTR1"}, {"color": "#30363d", "from": "APOB", "to": "SERPINC1"}, {"color": "#30363d", "from": "APOB", "to": "ACE"}, {"color": "#30363d", "from": "APOB", "to": "ADRB2"}, {"color": "#30363d", "from": "APOB", "to": "PLG"}, {"color": "#30363d", "from": "APOB", "to": "LIPA"}, {"color": "#30363d", "from": "APOB", "to": "HMGCR"}, {"color": "#30363d", "from": "APOB", "to": "LPL"}, {"color": "#30363d", "from": "APOB", "to": "LDLR"}, {"color": "#30363d", "from": "APOB", "to": "SORT1"}, {"color": "#30363d", "from": "APOB", "to": "PCSK9"}, {"color": "#30363d", "from": "APOB", "to": "APOE"}, {"color": "#30363d", "from": "APOB", "to": "LPA"}, {"color": "#30363d", "from": "APOE", "to": "CELSR2"}, {"color": "#30363d", "from": "APOE", "to": "LIPA"}, {"color": "#30363d", "from": "APOE", "to": "AGTR1"}, {"color": "#30363d", "from": "APOE", "to": "PTGS2"}, {"color": "#30363d", "from": "APOE", "to": "SERPINC1"}, {"color": "#30363d", "from": "APOE", "to": "FURIN"}, {"color": "#30363d", "from": "APOE", "to": "PLG"}, {"color": "#30363d", "from": "APOE", "to": "P2RY12"}, {"color": "#30363d", "from": "APOE", "to": "PCSK9"}, {"color": "#30363d", "from": "APOE", "to": "SORT1"}, {"color": "#30363d", "from": "APOE", "to": "HMGCR"}, {"color": "#30363d", "from": "APOE", "to": "LDLR"}, {"color": "#30363d", "from": "APOE", "to": "ACE"}, {"color": "#30363d", "from": "APOE", "to": "LPA"}, {"color": "#30363d", "from": "APOE", "to": "LPL"}, {"color": "#30363d", "from": "SORT1", "to": "FURIN"}, {"color": "#30363d", "from": "SORT1", "to": "LPL"}, {"color": "#30363d", "from": "SORT1", "to": "PCSK9"}, {"color": "#30363d", "from": "SORT1", "to": "CELSR2"}, {"color": "#30363d", "from": "ITGA2B", "to": "ADRA1A"}, {"color": "#30363d", "from": "ITGA2B", "to": "ACE"}, {"color": "#30363d", "from": "ITGA2B", "to": "SERPINC1"}, {"color": "#30363d", "from": "ITGA2B", "to": "PTGS1"}, {"color": "#30363d", "from": "ITGA2B", "to": "PLG"}, {"color": "#30363d", "from": "ITGA2B", "to": "COL4A1"}, {"color": "#30363d", "from": "ITGA2B", "to": "P2RY12"}, {"color": "#30363d", "from": "ITGA2B", "to": "ITGB3"}, {"color": "#30363d", "from": "CACNA1C", "to": "ADRB1"}, {"color": "#30363d", "from": "CACNA1C", "to": "ADRB2"}, {"color": "#30363d", "from": "CACNA1C", "to": "CACNA1F"}, {"color": "#30363d", "from": "CACNA1C", "to": "CACNA1D"}, {"color": "#30363d", "from": "CACNA1C", "to": "CACNA1S"}, {"color": "#30363d", "from": "CELSR2", "to": "HMGCR"}, {"color": "#30363d", "from": "CELSR2", "to": "PCSK9"}, {"color": "#30363d", "from": "HMGCR", "to": "LPA"}, {"color": "#30363d", "from": "HMGCR", "to": "LIPA"}, {"color": "#30363d", "from": "HMGCR", "to": "PTGS2"}, {"color": "#30363d", "from": "HMGCR", "to": "ADRB2"}, {"color": "#30363d", "from": "HMGCR", "to": "LPL"}, {"color": "#30363d", "from": "HMGCR", "to": "ACE"}, {"color": "#30363d", "from": "HMGCR", "to": "PCSK9"}, {"color": "#30363d", "from": "CACNA1D", "to": "CACNA1S"}, {"color": "#30363d", "from": "CACNA1D", "to": "CACNA1F"}, {"color": "#30363d", "from": "ACE", "to": "LPA"}, {"color": "#30363d", "from": "ACE", "to": "ADRA1D"}, {"color": "#30363d", "from": "ACE", "to": "SERPINC1"}, {"color": "#30363d", "from": "ACE", "to": "SLC12A3"}, {"color": "#30363d", "from": "ACE", "to": "ADRB2"}, {"color": "#30363d", "from": "ACE", "to": "PTGS2"}, {"color": "#30363d", "from": "ACE", "to": "ADRB1"}, {"color": "#30363d", "from": "ACE", "to": "PLG"}, {"color": "#30363d", "from": "ACE", "to": "P2RY12"}, {"color": "#30363d", "from": "ACE", "to": "PCSK9"}, {"color": "#30363d", "from": "ACE", "to": "FURIN"}, {"color": "#30363d", "from": "ACE", "to": "NR3C2"}, {"color": "#30363d", "from": "ACE", "to": "AGTR1"}, {"color": "#30363d", "from": "GUCY1A1", "to": "GUCY1B1"}, {"color": "#30363d", "from": "PCSK9", "to": "LIPA"}, {"color": "#30363d", "from": "PCSK9", "to": "LPL"}, {"color": "#30363d", "from": "PCSK9", "to": "FURIN"}, {"color": "#30363d", "from": "PCSK9", "to": "LPA"}, {"color": "#30363d", "from": "PCSK9", "to": "LDLR"}, {"color": "#30363d", "from": "ADRB2", "to": "PTGS2"}, {"color": "#30363d", "from": "ADRB2", "to": "P2RY12"}, {"color": "#30363d", "from": "ADRB2", "to": "SLC12A3"}, {"color": "#30363d", "from": "ADRB2", "to": "LDLR"}, {"color": "#30363d", "from": "ADRB2", "to": "ADRA1A"}, {"color": "#30363d", "from": "ADRB2", "to": "AGTR1"}, {"color": "#30363d", "from": "ADRB2", "to": "ADRB3"}, {"color": "#30363d", "from": "ADRB2", "to": "ADRB1"}, {"color": "#30363d", "from": "ADRA1B", "to": "ADRB1"}, {"color": "#30363d", "from": "ADRA1B", "to": "AGTR1"}, {"color": "#30363d", "from": "ADRA1B", "to": "ADRA1D"}, {"color": "#30363d", "from": "ADRA1B", "to": "ADRA1A"}, {"color": "#30363d", "from": "P2RY12", "to": "AGTR1"}, {"color": "#30363d", "from": "P2RY12", "to": "PTGS1"}, {"color": "#30363d", "from": "P2RY12", "to": "ITGB3"}, {"color": "#30363d", "from": "PLG", "to": "PTGS2"}, {"color": "#30363d", "from": "PLG", "to": "FURIN"}, {"color": "#30363d", "from": "PLG", "to": "SERPINC1"}, {"color": "#30363d", "from": "LPA", "to": "LDLR"}, {"color": "#30363d", "from": "LPA", "to": "LPL"}, {"color": "#30363d", "from": "LPA", "to": "SERPINC1"}, {"color": "#30363d", "from": "HHIPL1", "to": "COL4A1"}, {"color": "#30363d", "from": "HHIPL1", "to": "TCF21"}, {"color": "#30363d", "from": "LIPA", "to": "LPL"}, {"color": "#30363d", "from": "ADRB3", "to": "LPL"}, {"color": "#30363d", "from": "ADRB3", "to": "ADRB1"}, {"color": "#30363d", "from": "NR3C2", "to": "PTGS1"}, {"color": "#30363d", "from": "NR3C2", "to": "PTGS2"}, {"color": "#30363d", "from": "NR3C2", "to": "AGTR1"}, {"color": "#30363d", "from": "NR3C2", "to": "SLC12A3"}, {"color": "#30363d", "from": "PTGS1", "to": "ITGB3"}, {"color": "#30363d", "from": "PTGS1", "to": "PTGS2"}, {"color": "#30363d", "from": "CACNA1S", "to": "CACNA1F"}, {"color": "#30363d", "from": "PTGS2", "to": "ITGB3"}, {"color": "#30363d", "from": "PTGS2", "to": "AGTR1"}, {"color": "#30363d", "from": "SERPINC1", "to": "ITGB3"}, {"color": "#30363d", "from": "ADRB1", "to": "AGTR1"}, {"color": "#30363d", "from": "COL4A1", "to": "ITGB3"}, {"color": "#30363d", "from": "ADRA1D", "to": "AGTR1"}, {"color": "#30363d", "from": "ADRA1D", "to": "ADRA1A"}, {"color": "#30363d", "from": "ADRA1A", "to": "AGTR1"}, {"color": "#30363d", "from": "AGTR1", "to": "FURIN"}, {"color": "#30363d", "from": "AGTR1", "to": "LDLR"}, {"color": "#30363d", "from": "LDLR", "to": "LPL"}, {"color": "#30363d", "from": "FURIN", "to": "LPL"}]);
+
+                  nodeColors = {};
+                  allNodes = nodes.get({ returnType: "Object" });
+                  for (nodeId in allNodes) {
+                    nodeColors[nodeId] = allNodes[nodeId].color;
+                  }
+                  allEdges = edges.get({ returnType: "Object" });
+                  // adding nodes and edges to the graph
+                  data = {nodes: nodes, edges: edges};
+
+                  var options = {
+    "configure": {
+        "enabled": false
+    },
+    "edges": {
+        "color": {
+            "inherit": true
+        },
+        "smooth": {
+            "enabled": true,
+            "type": "dynamic"
+        }
+    },
+    "interaction": {
+        "dragNodes": true,
+        "hideEdgesOnDrag": false,
+        "hideNodesOnDrag": false
+    },
+    "physics": {
+        "barnesHut": {
+            "avoidOverlap": 0,
+            "centralGravity": 0.3,
+            "damping": 0.09,
+            "gravitationalConstant": -5000,
+            "springConstant": 0.001,
+            "springLength": 250
+        },
+        "enabled": true,
+        "stabilization": {
+            "enabled": true,
+            "fit": true,
+            "iterations": 1000,
+            "onlyDynamicEdges": false,
+            "updateInterval": 50
+        }
+    }
+};
+
+                  
+
+
+                  
+
+                  network = new vis.Network(container, data, options);
+
+                  
+
+                  
+
+                  
+
+
+                  
+
+                  return network;
+
+              }
+              drawGraph();
+        </script>
+    </body>
+</html>
